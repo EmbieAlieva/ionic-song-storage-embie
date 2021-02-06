@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-button [routerLink]="['/home']" routerDirection="back" color="medium">
+      <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+    </ion-button> 
+    <ion-title slot="secondary">Editar canción</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="songForm" *ngIf="song" (ngSubmit)="editRecord()">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Cantante:</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" placeholder="..." formControlName="singer" value="{{ song.singer }}"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Nombre:</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" placeholder="..." formControlName="name" value="{{ song.name }}"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Género:</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" placeholder="..."  formControlName="genre" value="{{ song.genre }}"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Fecha:</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="date" formControlName="date" value="{{ song.date }}"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>Portada:</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-input type="url" placeholder="http://..." formControlName="cover" value="{{ song.cover }}"></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button type="submit" shape="round" size="small" color="primary">
+      <ion-label>Guardar</ion-label>
+      <ion-icon slot="icon-only" size="small" name="save"></ion-icon>
+    </ion-button>
+    <ion-button shape="round" color="danger" size="small" [routerLink]="['/home']">
+      <ion-label>Cancelar</ion-label>
+      <ion-icon  slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </form>
+</ion-content>

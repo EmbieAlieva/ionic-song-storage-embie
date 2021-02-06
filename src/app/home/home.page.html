@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title slot="primary">Recordatorio de canciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-list>
+      <ion-item *ngFor="let song of songs" (click)="songTapped(song)">
+        <ion-thumbnail slot="start">
+          <img src="{{song.cover}}" alt="The cover of the song">
+        </ion-thumbnail>
+        <ion-label> {{ song.singer }} - {{ song.name }} </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar >
+    <img src="../../assets/images/music.png" alt="Songs icon">
+    <ion-title slot="primary"> Desarollo de Interfaces </ion-title>
+  </ion-toolbar>
+</ion-footer>

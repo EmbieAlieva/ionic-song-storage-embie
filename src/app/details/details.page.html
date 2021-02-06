@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-button [routerLink]="['/home']" routerDirection="back" color="medium">
+      <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+    </ion-button>
+    <ion-title slot="secondary">Detalles de la canción</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="song">
+    <img src="{{song.cover}}" alt="Cover of the song">
+    <ion-card-header> {{ song.singer }} - {{ song.name }} </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label><span>Género:</span> {{ song.genre }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label><span>Fecha de estreno:</span> {{ song.date }} </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-button shape="round" color="secondary" size="small" (click)="editRecord(song)">
+        <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+      <ion-button shape="round" color="danger" size="small" (click)="removeRecord(song.id)">
+        <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
