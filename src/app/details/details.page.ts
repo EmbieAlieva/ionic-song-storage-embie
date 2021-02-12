@@ -11,6 +11,7 @@ import { ISong } from '../shared/interfaces';
 })
 export class DetailsPage implements OnInit {
 
+  
   id: string;
   public song: ISong;
 
