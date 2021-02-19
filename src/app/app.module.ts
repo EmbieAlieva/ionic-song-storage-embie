@@ -12,6 +12,11 @@ import { CreatePageModule } from './create/create.module';
 import { DetailsPageModule } from './details/details.module';
 import { EditPageModule } from './edit/edit.module';
 import { HomePageModule } from './home/home.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +36,11 @@ import { HomePageModule } from './home/home.module';
     CreatePageModule,
     DetailsPageModule,
     EditPageModule,
-    HomePageModule
+    HomePageModule,
+
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireDatabaseModule
   ],
   providers: [{ 
     provide: RouteReuseStrategy, 

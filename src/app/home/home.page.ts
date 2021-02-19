@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SongdbService } from '../core/songdb.service';
-import { ISong } from '../shared/interfaces';
+
+import { SongcrudService } from '../core/songcrud.service';
 
 @Component({
   selector: 'app-home',
@@ -10,57 +10,79 @@ import { ISong } from '../shared/interfaces';
 })
 export class HomePage implements OnInit {
 
-  public songs: ISong[];
-  songsinit: ISong[] = [
-    {
-      id: '1',
-      singer: 'Alan Walker & ISÁK',
-      name: 'Sorry',
-      genre: 'Electro',
-      date: '2021',
-      cover: 'https://i.ytimg.com/vi/72agGC5b_Yo/maxresdefault.jpg'
-    },
-    {
-      id: '2',
-      singer: 'ATB, Topic, A7S',
-      name: 'Your Love (9PM)',
-      genre: 'Electro',
-      date: '2021',
-      cover: 'https://1.bp.blogspot.com/-eWxM4mFnIwg/YBFXldzJQPI/AAAAAAAAT34/cUw5fTjSZsUOixLkGefES6uqIw-8DdvaACLcBGAsYHQ/s640/topic%2Bsingle.jpg'     
-    }
-  ]
+  songs: any;
+  songSinger: string;
+  songName: string;   
+  songGenre: string;
+  songDate: string;
+  songCover: string;
 
-  constructor( private songdbService: SongdbService,  private router: Router ) { }
-
-  ngOnInit(): void {
-    // If the database is empty ser initial values
-    this.inicialization();
-  }
-
-  ionViewDidEnter() {
-    // Remove elements if it already has values
-    if (this.songs !== undefined) {
-      this.songs.splice(0);
-    }
-    this.retrieveValues();
-  }
-
-  inicialization() {
-    if (this.songdbService.empty()) {
-      this.songsinit.forEach(song => {
-        this.songdbService.setItem(song.id, song);
-      });
-    }
-  }
-
-  retrieveValues() {
-    // Retrieve values
-    this.songdbService.getAll().then(
-      (data) => this.songs = data
-    );
-  }
+  constructor( private songcrudService: SongcrudService, private router: Router ) { }
 
   songTapped(song) {
     this.router.navigate(['details', song.id]);
   }
+
+  ngOnInit(): void {
+    this.songcrudService.read_Song().subscribe(data => {
+      this.songs = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          idEdit: false,
+          singer: e.payload.doc.data()['singer'],
+          name: e.payload.doc.data()['name'],
+          genre: e.payload.doc.data()['genre'],
+          date: e.payload.doc.data()['date'],
+          cover: e.payload.doc.data()['cover']
+        };
+      })
+        console.log(this.songs);
+      });    
+  }
+
+ /* CreateRecord() {
+    let record = {};
+    record['singer'] = this.songSinger;
+    record['name'] = this.songName;
+    record['genre'] = this.songGenre;
+    record['date'] = this.songDate;
+    record['cover'] = this.songCover;
+
+    this.songcrudService.create_Song(record).then(resp => {
+      this.songSinger = "";
+      this.songName = "";
+      this.songGenre = "";
+      this.songDate = "";
+      this.songCover = "";
+      console.log(resp);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  RemoveRecord(rowID) {
+    this.songcrudService.delete_Song(rowID);
+  }
+
+  EditRecord(record) {
+    record.isEdit = true;
+    record.EditSinger = record.singer;
+    record.EditName = record.name;
+    record.EditGenre = record.genre;
+    record.EditDate = record.date;
+    record.EditCover = record.cover;
+  }
+
+  UpdateRecord(recordRow) {
+    let record = {};
+    record['singer'] = recordRow.EditSinger;
+    record['name'] = recordRow.EditName;
+    record['genre'] = recordRow.EditGenre;
+    record['date'] = recordRow.EditDate;
+    record['cover'] = recordRow.EditCover;
+
+    this.songcrudService.update_Song(recordRow.id, record);
+    recordRow.isEdit = false;
+  }*/
 }

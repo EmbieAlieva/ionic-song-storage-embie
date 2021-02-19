@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { SongdbService } from '../core/songdb.service';
+import { SongcrudService } from '../core/songcrud.service';
 import { ISong } from '../shared/interfaces';
 
 @Component({
@@ -17,15 +17,32 @@ export class DetailsPage implements OnInit {
   constructor(
     private activatedroute: ActivatedRoute,
     private router: Router,
-    private songdbService: SongdbService,
+    private songcrudService: SongcrudService,
     public toastController: ToastController
   ) { }
 
   ngOnInit() {
     this.id = this.activatedroute.snapshot.params.id;
-    this.songdbService.getItem(this.id).then(
-      (data:ISong) => this.song = data
-    );
+    this.songcrudService.read_Song().subscribe(data => {
+      let songs = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          isEdit: false,
+          singer: e.payload.doc.data()['singer'],
+          name: e.payload.doc.data()['name'],
+          genre: e.payload.doc.data()['genre'],
+          date: e.payload.doc.data()['date'],
+          cover: e.payload.doc.data()['cover']
+        };
+      })
+      console.log(songs);
+
+      songs.forEach(element => {
+        if (element.id == this.id)  {
+          this.song = element;
+        }
+      });
+    });
   }
 
   editRecord(song)  {
@@ -42,7 +59,7 @@ export class DetailsPage implements OnInit {
           icon: 'delete',
           text: 'ACEPTAR',
           handler: () => {
-            this.songdbService.remove(id);
+            this.songcrudService.delete_Song(id);
             this.router.navigate(['home']);
           }
         },

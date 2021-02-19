@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { SongdbService } from '../core/songdb.service';
+import { SongcrudService } from '../core/songcrud.service';
 import { ISong } from '../shared/interfaces';
 
 @Component({
@@ -18,7 +18,7 @@ export class CreatePage implements OnInit {
 
   constructor(
     private router: Router,
-    private songdbService: SongdbService,
+    private songcrudService: SongcrudService,
     public toastController: ToastController
   ) { }
 
@@ -61,9 +61,9 @@ export class CreatePage implements OnInit {
 
   saveSong() {
     this.song = this.songForm.value;
-    let nextKey = this.songdbService.getLastId().toString();
+    let nextKey = this.songcrudService.read_Song().toString();
     this.song.id = nextKey;
-    this.songdbService.setItem(nextKey, this.song);
+    this.songcrudService.create_Song(this.song);
     console.warn(this.songForm.value);
   }
 }

@@ -64,3 +64,45 @@
     </ion-button>
   </form>
 </ion-content>
+
+<!--
+  <ng-template #elseBlock>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col> Edit </ion-col>
+              <ion-col>
+                <ion-button fill="clear" color="medium" size="small" (click)="item.isEdit = false"> Cancel </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button fill="outline" color="success" size="small" (click)="UpdateRecord(item)"> Update </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label><strong>Cantante</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.EditSinger"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Nombre</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.EditName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Género</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.EditGenre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Fecha</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.EditDate"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label><strong>Portada</strong></ion-label>
+          <ion-input type="text" [(ngModel)]="item.EditCover"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ng-template>
+-->

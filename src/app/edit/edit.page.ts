@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { SongdbService } from '../core/songdb.service';
+import { SongcrudService } from '../core/songcrud.service';
 import { ISong } from '../shared/interfaces';
 
 @Component({
@@ -20,22 +20,37 @@ export class EditPage implements OnInit {
   constructor(
     private router: Router,
     private activatedroute: ActivatedRoute,
-    private songdbService: SongdbService,
+    private songcrudService: SongcrudService,
     public toastController: ToastController
   ) { }
 
   ngOnInit() {
     this.id = this.activatedroute.snapshot.params.id;
-    this.songdbService.getItem(this.id).then(
-      (data:ISong) => {
-        this.song = data
-        this.songForm.get('singer').setValue(this.song.singer);
-        this.songForm.get('name').setValue(this.song.name);
-        this.songForm.get('genre').setValue(this.song.genre);
-        this.songForm.get('date').setValue(this.song.date);
-        this.songForm.get('cover').setValue(this.song.cover);
-      }
-    );
+    this.songcrudService.read_Song().subscribe(data => {
+      let songs = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          isEdit: false,
+          singer: e.payload.doc.data()['singer'],
+          name: e.payload.doc.data()['name'],
+          genre: e.payload.doc.data()['genre'],
+          date: e.payload.doc.data()['date'],
+          cover: e.payload.doc.data()['cover']
+        };
+      })
+      console.log(songs);
+
+      songs.forEach(element => {
+        if (element.id == this.id)  {
+          this.song = element;
+          this.songForm.get('singer').setValue(this.song.singer);
+          this.songForm.get('name').setValue(this.song.name);
+          this.songForm.get('genre').setValue(this.song.genre);
+          this.songForm.get('date').setValue(this.song.date);
+          this.songForm.get('cover').setValue(this.song.cover);
+        }
+      });
+    });
     this.songForm = new FormGroup({
       singer: new FormControl(''),
       name: new FormControl(''),
@@ -75,7 +90,7 @@ export class EditPage implements OnInit {
     this.editedSong = this.songForm.value;
     let nextKey = this.song.id.trim();
     this.editedSong.id = nextKey;
-    this.songdbService.setItem(nextKey, this.editedSong);
+    this.songcrudService.update_Song(nextKey, this.editedSong);
     console.warn(this.songForm.value);
   }
 }
